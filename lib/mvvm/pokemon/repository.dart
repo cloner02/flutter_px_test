@@ -17,10 +17,13 @@ class PokemonRepository {
     _pokemonList[_pokemonList.indexWhere((element) => element.id == pokemon.id)] = pokemon;
   }
 
-  Future<List<Pokemon>> loadPokemons() async {
-    // Simulate a http request
-    final result = await ApiService().action(nameAction: "pokedex", data: {});
-    await Future.delayed(const Duration(seconds: 2));
+  Future<List<Pokemon>> loadPokemonsFromRegion() async {
+    final response = await ApiService().action(nameAction: "pokedex", data: {});
+
+    for (var pokemon in response) {
+      _pokemonList.add(Pokemon.fromJson(pokemon));
+    }
+    
     return Future.value(_pokemonList);
   }
 }

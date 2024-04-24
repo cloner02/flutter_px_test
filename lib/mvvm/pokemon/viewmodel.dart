@@ -9,9 +9,9 @@ class PokemonViewModel extends EventViewModel {
 
   PokemonViewModel(this._repository);
 
-  void loadPokemons() {
+  void loadPokemonsFromRegion() {
     notify(LoadingEvent(isLoading: true));
-    _repository.loadPokemons().then((value) {
+    _repository.loadPokemonsFromRegion().then((value) {
       notify(PokemonsLoadedEvent(pokemons: value));
       notify(LoadingEvent(isLoading: false));
     });
