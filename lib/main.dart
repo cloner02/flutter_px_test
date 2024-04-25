@@ -43,7 +43,10 @@ class Home extends StatelessWidget {
                 shape: const CircleBorder(),
                 padding: const EdgeInsets.all(64),
               ),
-              child: const Text('Go to Pokédex'),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 150),
+                child: const  Text('Go to Pokédex', textAlign: TextAlign.center),
+              ),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -56,7 +59,10 @@ class Home extends StatelessWidget {
                 shape: const CircleBorder(),
                 padding: const EdgeInsets.all(64),
               ),
-              child: const Text('Go to Collection'),
+               child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 150),
+                child: const  Text('Go to pokemons collected', textAlign: TextAlign.center),
+              ),
               onPressed: () {
                 Navigator.push(
                   context,
