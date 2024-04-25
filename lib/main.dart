@@ -35,8 +35,8 @@ class Home extends StatelessWidget {
         title: 'Pokédex Code Challenge',
       ),
       body: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             ElevatedButton(
               style: ElevatedButton.styleFrom(
