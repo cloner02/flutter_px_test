@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pokedex/mvvm/pokemon/ui/collection_ui.dart';
-import 'package:flutter_pokedex/mvvm/pokemon/ui/pokedex_ui.dart';
+import 'package:flutter_pokedex/mvvm/pokemonCollection/ui.dart';
+import 'package:flutter_pokedex/mvvm/pokemonPokedex/ui.dart';
 
 import 'components/appbar.dart';
 
@@ -35,10 +35,14 @@ class Home extends StatelessWidget {
         title: 'Pokédex Code Challenge',
       ),
       body: Center(
-        child: Column(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: const CircleBorder(),
+                padding: const EdgeInsets.all(64),
+              ),
               child: const Text('Go to Pokédex'),
               onPressed: () {
                 Navigator.push(
@@ -48,7 +52,11 @@ class Home extends StatelessWidget {
               },
             ),
             ElevatedButton(
-              child: const Text('Go to Collector'),
+              style: ElevatedButton.styleFrom(
+                shape: const CircleBorder(),
+                padding: const EdgeInsets.all(64),
+              ),
+              child: const Text('Go to Collection'),
               onPressed: () {
                 Navigator.push(
                   context,
