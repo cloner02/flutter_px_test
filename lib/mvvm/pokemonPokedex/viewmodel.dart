@@ -19,10 +19,25 @@ class PokemonPokedexViewModel extends EventViewModel {
       notify(LoadingEvent(isLoading: false));
     });
   }
+
+  void filterPokedex({String value = ""}) {
+    notify(LoadingEvent(isLoading: true));
+      List<PokemonPokedex> listPokemosFilter = _repository.filterPokedex(value: value);
+      notify(FilterPokedexLoadedEvent(pokemons: listPokemosFilter));
+      notify(LoadingEvent(isLoading: false));
+  }
+
+
 }
 
 class PokedexLoadedEvent extends ViewEvent {
   final List<PokemonPokedex> pokemons;
 
   PokedexLoadedEvent({required this.pokemons}) : super("PokemonsLoadedEvent");
+}
+
+class FilterPokedexLoadedEvent extends ViewEvent {
+  final List<PokemonPokedex> pokemons;
+
+  FilterPokedexLoadedEvent({required this.pokemons}) : super("FilterPokemonsLoadedEvent");
 }

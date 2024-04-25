@@ -46,27 +46,48 @@ class _PokedexState extends State<PokedexWidget> implements EventObserver {
           child: CircularProgressIndicator(),
         )
       ) : ( 
-        ListView.builder(
-              itemCount: _pokemons.length,
-              itemBuilder: (context, index) {
-                return Card(
-                  child: ListTile(
-                    title: Text(
-                      _pokemons[index].name,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 18.0),
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const PokemonDetailsWidget(),
-                        ),
-                      );
-                    },
-                  ),
-                );
-              },
+        Column(
+          children: [ Expanded(
+                        flex: 15,
+                        child: Container(
+                          margin: const EdgeInsets.all(10.0),
+                          child: TextField(
+                            onChanged: (value) {
+                              _viewModel.filterPokedex(value: value);
+                            },
+                            decoration: const InputDecoration(
+                              labelText: 'Search',
+                              border: OutlineInputBorder(),
+                            ),
+                          ),
+                        )
+                      ),
+                      Expanded(
+                        flex: 85,
+                        child:ListView.builder(
+                          itemCount: _pokemons.length,
+                          itemBuilder: (context, index) {
+                            return Card(
+                              child: ListTile(
+                                title: Text(
+                                  _pokemons[index].name,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(fontSize: 18.0),
+                                ),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const PokemonDetailsWidget(),
+                                    ),
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                        )
+                      )
+          ]
         )
       )
     );
@@ -79,6 +100,11 @@ class _PokedexState extends State<PokedexWidget> implements EventObserver {
         _isLoading = event.isLoading;
       });
     } else if (event is PokedexLoadedEvent) {
+      setState(() {
+        _pokemons = event.pokemons;
+      });
+    }
+    else if (event is FilterPokedexLoadedEvent) {
       setState(() {
         _pokemons = event.pokemons;
       });

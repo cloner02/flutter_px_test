@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pokedex/mvvm/pokemonCollection/ui.dart';
+import 'package:flutter_pokedex/mvvm/pokemonCollection/ui/collection_ui.dart';
 import 'package:flutter_pokedex/mvvm/pokemonPokedex/ui.dart';
 
 import 'components/appbar.dart';

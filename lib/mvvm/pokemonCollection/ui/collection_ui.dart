@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../components/appbar.dart';
+import '../../../components/appbar.dart';
 
 class CollectionWidget extends StatefulWidget {
   const CollectionWidget({super.key});
