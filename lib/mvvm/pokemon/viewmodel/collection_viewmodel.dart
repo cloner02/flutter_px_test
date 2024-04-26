@@ -18,6 +18,7 @@ class PokemonCollectionViewModel extends EventViewModel {
       notify(LoadingEvent(isLoading: false));
     });
   }
+  
 }
 
 class CollectionLoadedEvent extends ViewEvent {

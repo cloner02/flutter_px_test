@@ -18,10 +18,22 @@ class PokemonDetailsViewModel extends EventViewModel {
       notify(LoadingEvent(isLoading: false));
     });
   }
+
+  void addPokemon({required Pokemon pokemon}) {
+    _repository.addPokemon(pokemon);
+    notify(PokemonAddedEvent(pokemon: pokemon));
+    notify(LoadingEvent(isLoading: false));
+  }
 }
 
 class PokemonLoadedEvent extends ViewEvent {
   final Pokemon pokemon;
 
   PokemonLoadedEvent({required this.pokemon}) : super("PokemonsLoadedEvent");
+}
+
+class PokemonAddedEvent extends ViewEvent {
+  final Pokemon pokemon;
+
+  PokemonAddedEvent({required this.pokemon}) : super("PokemonAddedEvent");
 }
