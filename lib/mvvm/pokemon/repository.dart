@@ -21,11 +21,9 @@ class PokemonRepository {
   }
 
   Future<List<Pokemon>> loadPokemonCollection() async {
-
-    Pokemon.getAll().then((value) {
-        _pokemonList.clear();
-        _pokemonList = value;
-    });
+    _pokemonList.clear();
+   
+    _pokemonList = await Pokemon.getAll();
 
     return Future.value(_pokemonList);
   }

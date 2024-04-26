@@ -3,6 +3,8 @@ import 'package:flutter_pokedex/mvvm/loadingevent.dart';
 import 'package:flutter_pokedex/mvvm/observer.dart';
 import 'package:flutter_pokedex/mvvm/pokemon/model.dart';
 import 'package:flutter_pokedex/mvvm/pokemon/repository.dart';
+import 'package:flutter_pokedex/mvvm/pokemon/ui/components/pokemonbuttoncapture.dart';
+import 'package:flutter_pokedex/mvvm/pokemon/ui/components/pokemondatarow.dart';
 import 'package:flutter_pokedex/mvvm/pokemon/viewmodel/details_viewmodel.dart';
 import 'package:flutter_pokedex/utils/capitalize.dart';
 
@@ -10,7 +12,8 @@ import '../../../components/appbar.dart';
 
 class PokemonDetailsWidget extends StatefulWidget {
   final int id;
-  const PokemonDetailsWidget({Key? key, required this.id}) : super(key: key);
+  final Widget? previousScreen;
+  const PokemonDetailsWidget({Key? key, this.previousScreen, required this.id}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -38,62 +41,12 @@ class _PokedexState extends State<PokemonDetailsWidget> implements EventObserver
     _viewModel.unsubscribe(this);
   }
 
-  Column catchPokemonButton()
-  {
-    return 
-        Column(
-                children: [
-                  IconButton(
-                    icon: Icon(
-                      Icons.catching_pokemon_outlined,
-                      size: 100,
-                      color: _isCatched? Colors.green : Colors.red,
-                    ),
-                    onPressed: () {
-                       _isCatched? _viewModel.removePokemon(pokemon:_pokemon!): _viewModel.addPokemon(pokemon:_pokemon!);
-                    },
-                  ),
-                  _isCatched? const Text('Release Pokemon') : const Text('Catch Pokemon'), // add your text here
-                ],
-              );
-  }
-
-  Padding pokemonDataRow({required String label, required String value}) {
-    return 
-    Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            color: Colors.white // set the border radius
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(3.0),
-          child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-          Expanded(
-            child: Text(label, textAlign: TextAlign.end, style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 20)),
-          ),
-          Expanded(
-            child: Padding(
-            padding: const EdgeInsets.only(left: 8.0), // Add left padding here
-            child: Text(value, textAlign: TextAlign.start, style: const TextStyle(fontSize: 20)),
-            ),
-          ),
-          ],
-              )
-        ),
-      )
-    );
-    
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(
+      appBar:  CustomAppBar(
         title: 'Pokedex',
+        previousScreen: widget.previousScreen,
       ),
       body: _isLoading ? (
         const Center(
@@ -115,11 +68,11 @@ class _PokedexState extends State<PokemonDetailsWidget> implements EventObserver
                                 color: Theme.of(context).colorScheme.primaryContainer,
                                 child:    ListView(
                                 children: <Widget>[
-                                  pokemonDataRow(label: 'Name:', value: '${_pokemon?.name.capitalize()}'), 
-                                  pokemonDataRow(label: 'Weight:', value: '${_pokemon?.weight} hectograms'),
-                                  pokemonDataRow(label: 'Height:', value: '${_pokemon?.height} decimetres'),
-                                  pokemonDataRow(label: 'Type:', value: '${_pokemon?.typesString}'),
-                                  catchPokemonButton(),
+                                  PokemonDataRow(label: 'Name:', value: '${_pokemon?.name.capitalize()}'), 
+                                  PokemonDataRow(label: 'Weight:', value: '${_pokemon?.weight} hectograms'),
+                                  PokemonDataRow(label: 'Height:', value: '${_pokemon?.height} decimetres'),
+                                  PokemonDataRow(label: 'Type:', value: '${_pokemon?.typesString}'),
+                                  PokemonButtonCapture(pokemon: _pokemon!,viewModel: _viewModel,isCatched: _isCatched),
                                 ],
                               )
                             )

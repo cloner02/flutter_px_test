@@ -5,10 +5,12 @@ import 'package:flutter_pokedex/mvvm/pokemonbase/model.dart';
 
 class PokemonBaseListView extends StatelessWidget {
   final List<PokemonBase> pokemons;
+  final Widget? previousScreen;
 
   const PokemonBaseListView({
     Key? key,
     required this.pokemons,
+    this.previousScreen,
   }) : super(key: key);
 
   @override
@@ -27,7 +29,7 @@ class PokemonBaseListView extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => PokemonDetailsWidget(id: pokemons[index].id),
+                  builder: (context) => PokemonDetailsWidget(id: pokemons[index].id, previousScreen: previousScreen),
                 ),
               );
             },

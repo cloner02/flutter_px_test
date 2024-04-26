@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pokedex/mvvm/pokemonbase/ui/components/pokemonbasefilter.dart';
 import 'package:flutter_pokedex/mvvm/pokemonbase/ui/components/pokemonbaselistview.dart';
 import 'package:flutter_pokedex/mvvm/loadingevent.dart';
 import 'package:flutter_pokedex/mvvm/observer.dart';
@@ -49,18 +50,7 @@ class _PokedexState extends State<PokedexWidget> implements EventObserver {
             : (Column(children: [
                 Expanded(
                     flex: 15,
-                    child: Container(
-                      margin: const EdgeInsets.all(10.0),
-                      child: TextField(
-                        onChanged: (value) {
-                          _viewModel.filterName(value: value);
-                        },
-                        decoration: const InputDecoration(
-                          labelText: 'Search',
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                    )),
+                    child: PokemonBaseFilter(viewModel: _viewModel)),
                 Expanded(
                     flex: 85,
                     child: PokemonBaseListView(pokemons: _pokemons))
