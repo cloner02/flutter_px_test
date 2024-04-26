@@ -30,7 +30,6 @@ class _PokedexState extends State<PokemonDetailsWidget> implements EventObserver
     super.initState();
     _viewModel.subscribe(this);
     _viewModel.loadPokemon(id: widget.id);
-    //_viewModel.isCatched(pokemon: _pokemon!);
   }
 
   @override
@@ -141,6 +140,7 @@ class _PokedexState extends State<PokemonDetailsWidget> implements EventObserver
     else if (event is PokemonLoadedEvent) {
       setState(() {
         _pokemon = event.pokemon;
+        _viewModel.isCatched(pokemon: _pokemon!);
       });
     }
     else if (event is PokemonAddedEvent || event is PokemonRemovedEvent) {

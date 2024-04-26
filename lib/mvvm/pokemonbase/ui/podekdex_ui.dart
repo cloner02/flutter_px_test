@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pokedex/mvvm/pokemonbase/ui/components/pokemonbaselistview.dart';
 import 'package:flutter_pokedex/mvvm/loadingevent.dart';
 import 'package:flutter_pokedex/mvvm/observer.dart';
-import 'package:flutter_pokedex/mvvm/pokemon/ui/details_ui.dart';
 import 'package:flutter_pokedex/mvvm/pokemonbase/model.dart';
 import 'package:flutter_pokedex/mvvm/pokemonbase/repository.dart';
 import 'package:flutter_pokedex/mvvm/pokemonbase/viewmodel/pokedex_viewmodel.dart';
@@ -19,7 +19,7 @@ class PokedexWidget extends StatefulWidget {
 
 class _PokedexState extends State<PokedexWidget> implements EventObserver {
   final PokemonPokedexViewModel _viewModel =
-      PokemonPokedexViewModel(PokemonPokedexRepository());
+      PokemonPokedexViewModel(PokemonBaseRepository());
   bool _isLoading = false;
   List<PokemonBase> _pokemons = [];
 
@@ -53,7 +53,7 @@ class _PokedexState extends State<PokedexWidget> implements EventObserver {
                       margin: const EdgeInsets.all(10.0),
                       child: TextField(
                         onChanged: (value) {
-                          _viewModel.filterPokedex(value: value);
+                          _viewModel.filterName(value: value);
                         },
                         decoration: const InputDecoration(
                           labelText: 'Search',
@@ -63,28 +63,7 @@ class _PokedexState extends State<PokedexWidget> implements EventObserver {
                     )),
                 Expanded(
                     flex: 85,
-                    child: ListView.builder(
-                      itemCount: _pokemons.length,
-                      itemBuilder: (context, index) {
-                        return Card(
-                          child: ListTile(
-                            title: Text(
-                              _pokemons[index].name,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(fontSize: 18.0),
-                            ),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => PokemonDetailsWidget(id: _pokemons[index].id),
-                                ),
-                              );
-                            },
-                          ),
-                        );
-                      },
-                    ))
+                    child: PokemonBaseListView(pokemons: _pokemons))
               ])));
   }
 
@@ -98,7 +77,7 @@ class _PokedexState extends State<PokedexWidget> implements EventObserver {
       setState(() {
         _pokemons = event.pokemons;
       });
-    } else if (event is FilterPokedexLoadedEvent) {
+    } else if (event is FilterNameLoadedEvent) {
       setState(() {
         _pokemons = event.pokemons;
       });

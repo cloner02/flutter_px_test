@@ -3,8 +3,8 @@ import 'package:flutter_pokedex/utils/capitalize.dart';
 
 import 'model.dart';
 
-class PokemonPokedexRepository {
-  final List<PokemonBase> _pokemonPokedexList = [];
+class PokemonBaseRepository {
+  final List<PokemonBase> _pokemonList = [];
 
   Future<List<PokemonBase>> loadPokedexFromRegion({required String region}) async {
     final response = await ApiService().action(
@@ -14,19 +14,19 @@ class PokemonPokedexRepository {
     );
 
     for (var pokemon in response['pokemon_entries']) {
-      _pokemonPokedexList.add(PokemonBase.fromJson({
+      _pokemonList.add(PokemonBase.fromJson({
         "name": pokemon['pokemon_species']['name'].toString().capitalize(), 
         "id": pokemon['entry_number']
       }));
     }
     // sort by name
-    _pokemonPokedexList.sort((a, b) => a.name.compareTo(b.name));
+    _pokemonList.sort((a, b) => a.name.compareTo(b.name));
 
-    return Future.value(_pokemonPokedexList);
+    return Future.value(_pokemonList);
   }
   
-  List<PokemonBase> filterPokedex({required String value})  {
-    return _pokemonPokedexList.where((pokemon) => pokemon.name.toLowerCase().contains(value.toLowerCase())).toList();
+  List<PokemonBase> filterName({required String value})  {
+    return _pokemonList.where((pokemon) => pokemon.name.toLowerCase().contains(value.toLowerCase())).toList();
   }
 
 }

@@ -20,15 +20,17 @@ class PokemonDetailsViewModel extends EventViewModel {
   }
 
   void addPokemon({required Pokemon pokemon}) {
-    _repository.addPokemon(pokemon);
-    notify(PokemonAddedEvent(pokemon: pokemon));
-    notify(LoadingEvent(isLoading: false));
+    _repository.addPokemon(pokemon).then((value) {
+        notify(PokemonAddedEvent(pokemon: pokemon));
+        notify(LoadingEvent(isLoading: false));
+    });
   }
 
   void removePokemon({required Pokemon pokemon}) {
-    _repository.removePokemon(pokemon);
-    notify(PokemonRemovedEvent(pokemon: pokemon));
-    notify(LoadingEvent(isLoading: false));
+    _repository.removePokemon(pokemon).then((value) {
+      notify(PokemonRemovedEvent(pokemon: pokemon));
+      notify(LoadingEvent(isLoading: false));
+    });
   }
   void isCatched({required Pokemon pokemon}) {
     _repository.isCatched(pokemon: pokemon).then((value) {

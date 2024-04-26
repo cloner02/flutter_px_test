@@ -5,12 +5,12 @@ import 'model.dart';
 class PokemonRepository {
   List<Pokemon> _pokemonList = [];
 
-  void addPokemon(Pokemon pokemon) {
-    pokemon.save();
+  Future<void> addPokemon(Pokemon pokemon) async {
+    await pokemon.save();
   }
-
-  void removePokemon(Pokemon pokemon) {
-    pokemon.delete();
+ 
+  Future<void> removePokemon(Pokemon pokemon) async{
+    await pokemon.delete();
   }
 
   Future<Pokemon> loadPokemon({required int id}) async {
@@ -20,8 +20,7 @@ class PokemonRepository {
     return Future.value(Pokemon.fromJson(response));
   }
 
-  Future<List<Pokemon>> loadPokemonCollection(
-    {required String region}) async {
+  Future<List<Pokemon>> loadPokemonCollection() async {
 
     Pokemon.getAll().then((value) {
         _pokemonList.clear();
