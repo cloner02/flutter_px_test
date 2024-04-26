@@ -4,6 +4,7 @@ import 'package:flutter_pokedex/mvvm/loadingevent.dart';
 import 'package:flutter_pokedex/mvvm/observer.dart';
 import 'package:flutter_pokedex/mvvm/pokemon/model.dart';
 import 'package:flutter_pokedex/mvvm/pokemon/repository.dart';
+import 'package:flutter_pokedex/mvvm/pokemon/ui/components/pokemonfilter.dart';
 import 'package:flutter_pokedex/mvvm/pokemon/ui/components/pokemonlistview.dart';
 import 'package:flutter_pokedex/mvvm/pokemon/viewmodel/collection_viewmodel.dart';
 
@@ -25,12 +26,14 @@ class _CollectionState extends State<CollectionWidget> implements EventObserver 
       PokemonCollectionViewModel(PokemonRepository());
   bool _isLoading = false;
   List<Pokemon> _pokemons = [];
+  List<PokemonType> _pokemonTypes = [];
 
   @override
   void initState() {
     super.initState();
     _viewModel.subscribe(this);
     _viewModel.loadPokemonCollection();
+    _viewModel.loadPokemonTypes();
   }
 
   @override
@@ -52,9 +55,9 @@ class _CollectionState extends State<CollectionWidget> implements EventObserver 
                 child: CircularProgressIndicator(),
               ))
             : (Column(children: [
-                const Expanded(
+                Expanded(
                     flex: 15,
-                    child: Text('Filter')
+                    child: PokemonFilter(pokemons: _pokemons, pokemonTypes: _pokemonTypes, viewModel: _viewModel)
                 ),
                 Expanded(
                     flex: 85,
@@ -72,6 +75,21 @@ class _CollectionState extends State<CollectionWidget> implements EventObserver 
       });
     }
     else if (event is CollectionLoadedEvent) {
+      setState(() {
+        _pokemons = event.pokemons;
+      });
+    }
+    else if (event is PokemonTypesLoadedEvent) {
+      setState(() {
+        _pokemonTypes = event.pokemontypes;
+      });
+    }
+    else if (event is SortByNameLoadedEvent) {
+      setState(() {
+        _pokemons = event.pokemons;
+      });
+    }
+    else if (event is FilterByTypeLoadedEvent) {
       setState(() {
         _pokemons = event.pokemons;
       });

@@ -6,6 +6,7 @@ class ApiService {
    Map<String, dynamic> actionlist = {
     "pokedex": {"type": "get", "path": "pokedex/:region"},
     "pokemon": {"type": "get", "path": "pokemon/:id"},
+    "typelist": {"type": "get", "path": "type"},
    };
 
   ApiService() : _dio = Dio(BaseOptions(
