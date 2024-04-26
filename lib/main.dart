@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pokedex/mvvm/pokemon/ui/collection_ui.dart';
 import 'package:flutter_pokedex/mvvm/pokemonbase/ui/podekdex_ui.dart';
-
 import 'components/appbar.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const Pokedex());
 }
 

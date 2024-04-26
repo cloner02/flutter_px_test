@@ -24,6 +24,18 @@ class PokemonDetailsViewModel extends EventViewModel {
     notify(PokemonAddedEvent(pokemon: pokemon));
     notify(LoadingEvent(isLoading: false));
   }
+
+  void removePokemon({required Pokemon pokemon}) {
+    _repository.removePokemon(pokemon);
+    notify(PokemonRemovedEvent(pokemon: pokemon));
+    notify(LoadingEvent(isLoading: false));
+  }
+  void isCatched({required Pokemon pokemon}) {
+    _repository.isCatched(pokemon: pokemon).then((value) {
+    notify(IsCatchedEvent(isCatched: value));
+    notify(LoadingEvent(isLoading: false));
+    });
+  }
 }
 
 class PokemonLoadedEvent extends ViewEvent {
@@ -36,4 +48,15 @@ class PokemonAddedEvent extends ViewEvent {
   final Pokemon pokemon;
 
   PokemonAddedEvent({required this.pokemon}) : super("PokemonAddedEvent");
+}
+
+class PokemonRemovedEvent extends ViewEvent {
+  final Pokemon pokemon;
+
+  PokemonRemovedEvent({required this.pokemon}) : super("PokemonRemovedEvent");
+}
+
+class IsCatchedEvent extends ViewEvent {
+  final bool isCatched;
+  IsCatchedEvent({required this.isCatched}) : super("IsCatchedEvent");
 }

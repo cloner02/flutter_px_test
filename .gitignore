@@ -41,3 +41,5 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+# ignore the folder pokemons where is store the details of the pokemons
+/pokemons

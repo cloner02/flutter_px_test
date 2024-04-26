@@ -30,6 +30,7 @@ class _PokedexState extends State<PokemonDetailsWidget> implements EventObserver
     super.initState();
     _viewModel.subscribe(this);
     _viewModel.loadPokemon(id: widget.id);
+    //_viewModel.isCatched(pokemon: _pokemon!);
   }
 
   @override
@@ -38,7 +39,27 @@ class _PokedexState extends State<PokemonDetailsWidget> implements EventObserver
     _viewModel.unsubscribe(this);
   }
 
-  Padding buildRow({required String label, String? value, Widget? widget}) {
+  Column catchPokemonButton()
+  {
+    return 
+        Column(
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      Icons.catching_pokemon_outlined,
+                      size: 100,
+                      color: _isCatched? Colors.green : Colors.red,
+                    ),
+                    onPressed: () {
+                       _isCatched? _viewModel.removePokemon(pokemon:_pokemon!): _viewModel.addPokemon(pokemon:_pokemon!);
+                    },
+                  ),
+                  _isCatched? const Text('Release Pokemon') : const Text('Catch Pokemon'), // add your text here
+                ],
+              );
+  }
+
+  Padding pokemonDataRow({required String label, required String value}) {
     return 
     Padding(
       padding: const EdgeInsets.all(10.0),
@@ -47,17 +68,23 @@ class _PokedexState extends State<PokemonDetailsWidget> implements EventObserver
             borderRadius: BorderRadius.circular(10.0),
             color: Colors.white // set the border radius
         ),
-        child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-        Expanded(
-          child: Text(label, textAlign: TextAlign.start, style: const TextStyle(fontSize: 20)),
+        child: Padding(
+          padding: const EdgeInsets.all(3.0),
+          child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+          Expanded(
+            child: Text(label, textAlign: TextAlign.end, style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 20)),
+          ),
+          Expanded(
+            child: Padding(
+            padding: const EdgeInsets.only(left: 8.0), // Add left padding here
+            child: Text(value, textAlign: TextAlign.start, style: const TextStyle(fontSize: 20)),
+            ),
+          ),
+          ],
+              )
         ),
-        Expanded(
-          child: (value) != null ? Text(value, textAlign: TextAlign.start, style: const TextStyle(fontSize: 20) ) : widget ?? Container(),
-        ),
-        ],
-      ),
       )
     );
     
@@ -84,44 +111,22 @@ class _PokedexState extends State<PokemonDetailsWidget> implements EventObserver
                       ),
                       Expanded(
                         flex: 65,
-                        child: Stack(
-                          children: [
-                                     Container(
-                                        color: Theme.of(context).colorScheme.primaryContainer,
-                                        child:    ListView(
-                                        children: <Widget>[
-                                          buildRow(label: 'Name', value: '${_pokemon?.name.capitalize()}'), 
-                                          buildRow(label: 'Weight', value: '${_pokemon?.weight} hectograms'),
-                                          buildRow(label: 'Height', value: '${_pokemon?.height} decimetres'),
-                                          buildRow(label: 'Type', value: '${_pokemon?.typesString}'),
-                                        ],
-                                      )
-                                    ),
-                                    Positioned(
-                                      bottom: 150,
-                                      right: 50,
-                                      left: 50,
-                                      child: Column(
-                                        children: [
-                                          IconButton(
-                                            icon: Icon(
-                                              Icons.catching_pokemon_outlined,
-                                              size: 100,
-                                              color: _isCatched? Colors.green : Colors.red,
-                                            ),
-                                            onPressed: () {
-                                               _viewModel.addPokemon(pokemon:_pokemon!);
-                                            },
-                                          ),
-                                          _isCatched? const Text('Release Pokemon') : const Text('Catch Pokemon'), // add your text here
-                                        ],
-                                      ),
-                                    )
-                                  ]
-                      )
-                    )
-          ]
-        )
+                        child: 
+                              Container(
+                                color: Theme.of(context).colorScheme.primaryContainer,
+                                child:    ListView(
+                                children: <Widget>[
+                                  pokemonDataRow(label: 'Name:', value: '${_pokemon?.name.capitalize()}'), 
+                                  pokemonDataRow(label: 'Weight:', value: '${_pokemon?.weight} hectograms'),
+                                  pokemonDataRow(label: 'Height:', value: '${_pokemon?.height} decimetres'),
+                                  pokemonDataRow(label: 'Type:', value: '${_pokemon?.typesString}'),
+                                  catchPokemonButton(),
+                                ],
+                              )
+                            )
+                    ),
+                ]
+              )
           )
     );
   }
@@ -138,9 +143,15 @@ class _PokedexState extends State<PokemonDetailsWidget> implements EventObserver
         _pokemon = event.pokemon;
       });
     }
-    else if (event is PokemonAddedEvent) {
+    else if (event is PokemonAddedEvent || event is PokemonRemovedEvent) {
       setState(() {
-        _isCatched = true;
+        _viewModel.isCatched(pokemon: _pokemon!);
+      });
+    }
+    else if (event is IsCatchedEvent)
+    {
+      setState(() {
+        _isCatched = event.isCatched;
       });
     }
   }

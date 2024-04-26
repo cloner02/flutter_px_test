@@ -3,19 +3,14 @@ import 'package:flutter_pokedex/api/api.dart';
 import 'model.dart';
 
 class PokemonRepository {
-  final List<Pokemon> _pokemonList = [];
+  List<Pokemon> _pokemonList = [];
 
   void addPokemon(Pokemon pokemon) {
-    _pokemonList.add(pokemon);
+    pokemon.save();
   }
 
   void removePokemon(Pokemon pokemon) {
-    _pokemonList.remove(pokemon);
-  }
-
-  void updatePokemon(Pokemon pokemon) {
-    _pokemonList[_pokemonList
-        .indexWhere((element) => element.id == pokemon.id)] = pokemon;
+    pokemon.delete();
   }
 
   Future<Pokemon> loadPokemon({required int id}) async {
@@ -27,15 +22,18 @@ class PokemonRepository {
 
   Future<List<Pokemon>> loadPokemonCollection(
     {required String region}) async {
-    dynamic response = [];
 
-    for (var pokemon in response) {
-      _pokemonList.add(Pokemon.fromJson({
-        "name": pokemon['pokemon_species']['name'],
-        "id": pokemon['entry_number']
-      }));
-    }
+    Pokemon.getAll().then((value) {
+        _pokemonList.clear();
+        _pokemonList = value;
+    });
 
     return Future.value(_pokemonList);
+  }
+
+  Future<bool> isCatched({required Pokemon pokemon}) async {
+    final bool isCatched = await Pokemon.getById(pokemon.id.toString()) != null;
+
+    return Future.value(isCatched);
   }
 }
