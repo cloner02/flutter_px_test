@@ -56,7 +56,7 @@ class PokemonRepository {
   List<Pokemon> filterByType({required String type})  {
     return _pokemonList.where((pokemon) {
       final List<PokemonType> types = pokemon.types;
-      return types.any((element) => element.name.toLowerCase().contains(type.toLowerCase())) ||
+      return type == 'All Types' || types.any((element) => element.name.toLowerCase().contains(type.toLowerCase())) ||
           pokemon.name.toLowerCase().contains(type.toLowerCase());
     }).toList();
   }

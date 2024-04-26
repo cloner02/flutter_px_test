@@ -23,13 +23,20 @@ class PokemonFilter extends StatelessWidget {
       children: <Widget>[
         DropdownButton<String>(
           hint: const Text('Select Pokemon Type'),
-          items: pokemonTypes.map((PokemonType type) {
+          items: <DropdownMenuItem<String>>[
+          const DropdownMenuItem<String>(
+            alignment: Alignment.center,
+            value: '',
+            child: Text('All Types'),
+          ),
+          ...pokemonTypes.map((PokemonType type) {
             return DropdownMenuItem<String>(
               alignment: Alignment.center,
               value: type.name,
               child: Text(type.name.capitalize()),
             );
           }).toList(),
+        ],
           onChanged: (value) {
             if (value != null)
             {
