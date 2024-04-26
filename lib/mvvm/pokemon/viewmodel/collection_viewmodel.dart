@@ -1,15 +1,15 @@
 import 'package:flutter_pokedex/mvvm/loadingevent.dart';
 
-import '../viewmodel.dart';
-import 'repository.dart';
+import '../../viewmodel.dart';
+import '../repository.dart';
 
 import '/mvvm/observer.dart';
-import 'model.dart';
+import '../model.dart';
 
-class PokemonViewModel extends EventViewModel {
+class PokemonCollectionViewModel extends EventViewModel {
   final PokemonRepository _repository;
 
-  PokemonViewModel(this._repository);
+  PokemonCollectionViewModel(this._repository);
 
   void loadPokemonCollection({required String region}) {
     notify(LoadingEvent(isLoading: true));
@@ -21,14 +21,7 @@ class PokemonViewModel extends EventViewModel {
 }
 
 class CollectionLoadedEvent extends ViewEvent {
-  final List<PokemonDetails> pokemons;
+  final List<Pokemon> pokemons;
 
   CollectionLoadedEvent({required this.pokemons}) : super("PokemonsLoadedEvent");
-}
-
-// should be emitted when 
-class PokemonCreatedEvent extends ViewEvent {
-  final PokemonDetails pokemon;
-
-  PokemonCreatedEvent(this.pokemon) : super("PokemonCreatedEvent");
 }

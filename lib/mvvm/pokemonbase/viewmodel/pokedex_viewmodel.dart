@@ -1,8 +1,8 @@
 import 'package:flutter_pokedex/mvvm/loadingevent.dart';
-import 'package:flutter_pokedex/mvvm/pokemonPokedex/model.dart';
+import 'package:flutter_pokedex/mvvm/pokemonbase/model.dart';
 
-import '../viewmodel.dart';
-import 'repository.dart';
+import '../../viewmodel.dart';
+import '../repository.dart';
 
 import '/mvvm/observer.dart';
 
@@ -22,7 +22,7 @@ class PokemonPokedexViewModel extends EventViewModel {
 
   void filterPokedex({String value = ""}) {
     notify(LoadingEvent(isLoading: true));
-      List<PokemonPokedex> listPokemosFilter = _repository.filterPokedex(value: value);
+      List<PokemonBase> listPokemosFilter = _repository.filterPokedex(value: value);
       notify(FilterPokedexLoadedEvent(pokemons: listPokemosFilter));
       notify(LoadingEvent(isLoading: false));
   }
@@ -31,13 +31,13 @@ class PokemonPokedexViewModel extends EventViewModel {
 }
 
 class PokedexLoadedEvent extends ViewEvent {
-  final List<PokemonPokedex> pokemons;
+  final List<PokemonBase> pokemons;
 
   PokedexLoadedEvent({required this.pokemons}) : super("PokemonsLoadedEvent");
 }
 
 class FilterPokedexLoadedEvent extends ViewEvent {
-  final List<PokemonPokedex> pokemons;
+  final List<PokemonBase> pokemons;
 
   FilterPokedexLoadedEvent({required this.pokemons}) : super("FilterPokemonsLoadedEvent");
 }

@@ -5,6 +5,7 @@ class ApiService {
 
    Map<String, dynamic> actionlist = {
     "pokedex": {"type": "get", "path": "pokedex/:region"},
+    "pokemon": {"type": "get", "path": "pokemon/:id"},
    };
 
   ApiService() : _dio = Dio(BaseOptions(
@@ -24,25 +25,25 @@ class ApiService {
     return path;
   }
 
-  Future<Map<String,dynamic>> action({ String nameAction = '', Map<String,String>? parameters, dynamic data}) async {
+  Future<Map<String,dynamic>> action({ String actionName = '', Map<String,String>? parameters, dynamic data}) async {
     try {
       
       Options paramOption = Options(
-        method: actionlist[nameAction]["type"].toUpperCase(),
+        method: actionlist[actionName]["type"].toUpperCase(),
         validateStatus: (status) {
           return status! < 600;
         },
       );
 
       final response = await _dio.request(
-        replaceParametersValueWithPath(path: actionlist[nameAction]["path"],parameters:  parameters), 
+        replaceParametersValueWithPath(path: actionlist[actionName]["path"],parameters:  parameters), 
         options: paramOption, 
         data: data
       );
 
       return Future.value(response.data);
     } catch (e) {
-      throw Exception('Failed the request called $nameAction');
+      throw Exception('Failed the request called $actionName');
     }
   }
 }

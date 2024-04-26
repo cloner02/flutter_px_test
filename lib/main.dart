@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pokedex/mvvm/pokemonCollection/ui/collection_ui.dart';
-import 'package:flutter_pokedex/mvvm/pokemonPokedex/ui.dart';
+import 'package:flutter_pokedex/mvvm/pokemon/ui/collection_ui.dart';
+import 'package:flutter_pokedex/mvvm/pokemonbase/ui/podekdex_ui.dart';
 
 import 'components/appbar.dart';
 
@@ -27,6 +27,26 @@ class Pokedex extends StatelessWidget {
 class Home extends StatelessWidget {
   const Home({super.key});
 
+
+  ElevatedButton buildElevatedButton({required BuildContext context, required Widget route, required String value}) {
+  return ElevatedButton(
+    style: ElevatedButton.styleFrom(
+      shape: const CircleBorder(),
+      padding: const EdgeInsets.all(64),
+    ),
+    child: ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 150),
+      child: Text(value, textAlign: TextAlign.center),
+    ),
+    onPressed: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => route),
+      );
+    },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,38 +58,8 @@ class Home extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                shape: const CircleBorder(),
-                padding: const EdgeInsets.all(64),
-              ),
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 150),
-                child: const  Text('Go to Pokédex', textAlign: TextAlign.center),
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const PokedexWidget()),
-                );
-              },
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                shape: const CircleBorder(),
-                padding: const EdgeInsets.all(64),
-              ),
-               child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 150),
-                child: const  Text('Go to pokemons collected', textAlign: TextAlign.center),
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const CollectionWidget()),
-                );
-              },
-            ),
+            buildElevatedButton(context: context, route: const PokedexWidget(), value: 'Go to Pokédex'),
+            buildElevatedButton(context: context, route: const CollectionWidget(), value: 'Go to pokemons collected'),
           ],
         ),
       ),
