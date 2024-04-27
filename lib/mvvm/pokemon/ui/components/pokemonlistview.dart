@@ -6,16 +6,18 @@ import 'package:flutter_pokedex/mvvm/pokemonbase/ui/components/pokemonbaselistvi
 class PokemonListView extends StatelessWidget {
   final List<Pokemon> pokemons;
   final Widget? previousScreen;
+  final Function(ThemeData) onThemeChanged;
 
   const PokemonListView({
     Key? key,
     required this.pokemons,
     this.previousScreen,
+    required this.onThemeChanged
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return PokemonBaseListView(pokemons: pokemons, previousScreen: previousScreen);
+    return PokemonBaseListView(pokemons: pokemons, previousScreen: previousScreen, onThemeChanged: onThemeChanged);
   }
 
 }

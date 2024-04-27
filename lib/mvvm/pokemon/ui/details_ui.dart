@@ -13,7 +13,8 @@ import '../../../components/appbar.dart';
 class PokemonDetailsWidget extends StatefulWidget {
   final int id;
   final Widget? previousScreen;
-  const PokemonDetailsWidget({Key? key, this.previousScreen, required this.id}) : super(key: key);
+  final Function(ThemeData) onThemeChanged;
+  const PokemonDetailsWidget({Key? key, this.previousScreen, required this.onThemeChanged, required this.id}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -99,12 +100,19 @@ class _PokedexState extends State<PokemonDetailsWidget> implements EventObserver
     else if (event is PokemonAddedEvent || event is PokemonRemovedEvent) {
       setState(() {
         _viewModel.isCatched(pokemon: _pokemon!);
+        _viewModel.setNewTheme();
       });
     }
     else if (event is IsCatchedEvent)
     {
       setState(() {
         _isCatched = event.isCatched;
+      });
+    }
+    else if (event is SetNewThemeEvent)
+    {
+      setState(() {
+        widget.onThemeChanged(event.themeData);
       });
     }
   }

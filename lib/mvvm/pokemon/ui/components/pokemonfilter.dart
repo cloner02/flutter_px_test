@@ -19,38 +19,46 @@ class PokemonFilter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
-        DropdownButton<String>(
-          hint: const Text('Select Pokemon Type'),
-          items: <DropdownMenuItem<String>>[
-          const DropdownMenuItem<String>(
-            alignment: Alignment.center,
-            value: '',
-            child: Text('All Types'),
-          ),
-          ...pokemonTypes.map((PokemonType type) {
-            return DropdownMenuItem<String>(
+        Expanded(
+          child: DropdownButton<String>(
+            isExpanded: true,
+            hint: const Text('Select Type'),
+            items: <DropdownMenuItem<String>>[
+            const DropdownMenuItem<String>(
               alignment: Alignment.center,
-              value: type.name,
-              child: Text(type.name.capitalize()),
-            );
-          }).toList(),
-        ],
-          onChanged: (value) {
-            if (value != null)
-            {
-              viewModel.filterByType(type: value);
-            }
-          },
+              value: '',
+              child: Text('All Types'),
+            ),
+            ...pokemonTypes.map((PokemonType type) {
+              return DropdownMenuItem<String>(
+                alignment: Alignment.center,
+                value: type.name,
+                child: Text(type.name.capitalize()),
+              );
+            }).toList(),
+          ],
+            onChanged: (value) {
+              if (value != null)
+              {
+                viewModel.filterByType(type: value);
+              }
+            },
+          )
         ),
-        ElevatedButton.icon(
-          icon: const Icon(Icons.sort_by_alpha), 
-          label: const Text('Sort by Name'),
-          onPressed: () {
-            // Sort _pokemons by name
-            viewModel.sortByName();
-          },
+        Expanded(
+          child: FractionallySizedBox(
+            widthFactor: 0.7,
+            child: ElevatedButton.icon(
+              icon: const Icon(Icons.sort_by_alpha), 
+              label: const Text('Sort by Name'),
+              onPressed: () {
+                // Sort _pokemons by name
+                viewModel.sortByName();
+              },
+            )
+          )
         ),
       ],
     );

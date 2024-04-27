@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_pokedex/mvvm/loadingevent.dart';
 
 import '../../viewmodel.dart';
@@ -38,6 +39,15 @@ class PokemonDetailsViewModel extends EventViewModel {
     notify(LoadingEvent(isLoading: false));
     });
   }
+
+  void setNewTheme()
+  {
+    _repository.setNewTheme().then((value) {
+      ThemeData themeData = value;
+      notify(SetNewThemeEvent(themeData: themeData));
+      notify(LoadingEvent(isLoading: false));
+    });
+  }
 }
 
 class PokemonLoadedEvent extends ViewEvent {
@@ -61,4 +71,9 @@ class PokemonRemovedEvent extends ViewEvent {
 class IsCatchedEvent extends ViewEvent {
   final bool isCatched;
   IsCatchedEvent({required this.isCatched}) : super("IsCatchedEvent");
+}
+
+class SetNewThemeEvent extends ViewEvent {
+  final ThemeData themeData;
+  SetNewThemeEvent({required this.themeData}) : super("SetNewThemeEvent");
 }

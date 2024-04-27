@@ -12,7 +12,8 @@ import '../../../components/appbar.dart';
 
 class CollectionWidget extends StatefulWidget {
   final Widget? previousScreen;
-  const CollectionWidget({this.previousScreen, super.key});
+  final Function(ThemeData) onThemeChanged;
+  const CollectionWidget({this.previousScreen, required this.onThemeChanged, super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -46,9 +47,9 @@ class _CollectionState extends State<CollectionWidget> implements EventObserver 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(
+      appBar: CustomAppBar(
         title: 'Collection',
-        previousScreen: Home(),
+        previousScreen: Home(onThemeChanged: widget.onThemeChanged),
       ),
       body: _isLoading
             ? (const Center(
@@ -61,7 +62,7 @@ class _CollectionState extends State<CollectionWidget> implements EventObserver 
                 ),
                 Expanded(
                     flex: 85,
-                    child: PokemonListView(pokemons: _pokemons, previousScreen: const CollectionWidget()))
+                    child: PokemonListView(pokemons: _pokemons, previousScreen: CollectionWidget(onThemeChanged: widget.onThemeChanged), onThemeChanged: widget.onThemeChanged))
                 ])
               )
       );

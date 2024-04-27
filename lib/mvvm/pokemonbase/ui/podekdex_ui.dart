@@ -10,7 +10,8 @@ import 'package:flutter_pokedex/mvvm/pokemonbase/viewmodel/pokedex_viewmodel.dar
 import '../../../components/appbar.dart';
 
 class PokedexWidget extends StatefulWidget {
-  const PokedexWidget({super.key});
+  final Function(ThemeData) onThemeChanged;
+  const PokedexWidget({super.key, required this.onThemeChanged});
 
   @override
   State<StatefulWidget> createState() {
@@ -53,7 +54,7 @@ class _PokedexState extends State<PokedexWidget> implements EventObserver {
                     child: PokemonBaseFilter(viewModel: _viewModel)),
                 Expanded(
                     flex: 85,
-                    child: PokemonBaseListView(pokemons: _pokemons))
+                    child: PokemonBaseListView(pokemons: _pokemons, onThemeChanged: widget.onThemeChanged))
               ])));
   }
 

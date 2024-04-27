@@ -1,10 +1,14 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_pokedex/api/api.dart';
+import 'package:flutter_pokedex/utils/capitalize.dart';
+import 'package:flutter_pokedex/utils/theme.dart';
 
 import 'model.dart';
 
 class PokemonRepository {
   List<Pokemon> _pokemonList = [];
   bool _isSortAsc = false;
+  ThemeData _themeData =  ThemeData();
 
   Future<void> addPokemon(Pokemon pokemon) async {
     await pokemon.save();
@@ -36,6 +40,38 @@ class PokemonRepository {
     _pokemonList.sort((a, b) => (_isSortAsc)? b.name.compareTo(a.name) : a.name.compareTo(b.name));
     _isSortAsc = !_isSortAsc;
     return _pokemonList;
+  }
+
+  Future<ThemeData> setNewTheme() async {
+    Map<String, int> typeCounts = {};
+    _pokemonList = await loadPokemonCollection();
+    for (Pokemon pokemon in _pokemonList) {
+      for (PokemonType type in pokemon.types) {
+        if (typeCounts.containsKey(type.name)) {
+          typeCounts[type.name] = typeCounts[type.name]! + 1;
+        } else {
+          typeCounts[type.name] = 1;
+        }
+      }
+    }
+
+    int highestCount = 0;
+    List<String> mostCommonTypes = [];
+
+    typeCounts.forEach((type, count) {
+      if (count > highestCount) {
+        highestCount = count;
+        mostCommonTypes = [type];
+      } else if (count == highestCount) {
+        mostCommonTypes.add(type);
+      }
+    });
+
+    String colorKey =  (mostCommonTypes.length == 1)? mostCommonTypes[0].capitalize() : 'default';
+
+
+    _themeData = createTheme(colorKey: colorKey);
+    return Future.value(_themeData);
   }
 
   Future<List<Pokemon>> loadPokemonCollection() async {

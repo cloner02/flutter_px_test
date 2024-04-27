@@ -6,11 +6,13 @@ import 'package:flutter_pokedex/mvvm/pokemonbase/model.dart';
 class PokemonBaseListView extends StatelessWidget {
   final List<PokemonBase> pokemons;
   final Widget? previousScreen;
+  final Function(ThemeData) onThemeChanged;
 
   const PokemonBaseListView({
     Key? key,
     required this.pokemons,
     this.previousScreen,
+    required this.onThemeChanged
   }) : super(key: key);
 
   @override
@@ -29,7 +31,7 @@ class PokemonBaseListView extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => PokemonDetailsWidget(id: pokemons[index].id, previousScreen: previousScreen),
+                  builder: (context) => PokemonDetailsWidget(id: pokemons[index].id,onThemeChanged: onThemeChanged,  previousScreen: previousScreen),
                 ),
               );
             },

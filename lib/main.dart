@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pokedex/mvvm/pokemon/ui/collection_ui.dart';
 import 'package:flutter_pokedex/mvvm/pokemonbase/ui/podekdex_ui.dart';
+import 'package:flutter_pokedex/utils/theme.dart';
 import 'components/appbar.dart';
 
 void main() {
@@ -8,25 +9,51 @@ void main() {
   runApp(const Pokedex());
 }
 
-class Pokedex extends StatelessWidget {
+class Pokedex extends StatefulWidget {
   const Pokedex({super.key});
+
+  @override
+  State<StatefulWidget> createState() {
+    return _PokedexState();
+  }
+}
+
+class _PokedexState extends State<Pokedex> {
+  ThemeData _themeData = ThemeData();
+
+  @override
+  void initState() {
+    super.initState();
+    _themeData =  createTheme();
+  }
+
+  void _changeTheme(ThemeData newTheme) {
+    setState(() {
+      _themeData = newTheme;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Pokédex Code Challenge',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const Home(),
+      theme: _themeData,
+      home: Home(onThemeChanged: _changeTheme),
     );
   }
 }
 
-class Home extends StatelessWidget {
-  const Home({super.key});
+class Home extends StatefulWidget {
+  final Function(ThemeData) onThemeChanged;
+  const Home({super.key , required this.onThemeChanged});
 
+  @override
+  State<StatefulWidget> createState() {
+    return _HomeState();
+  }
+}
+
+class _HomeState extends State<Home> {
 
   ElevatedButton buildElevatedButton({required BuildContext context, required Widget route, required String value}) {
   return ElevatedButton(
@@ -58,8 +85,8 @@ class Home extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            buildElevatedButton(context: context, route: const PokedexWidget(), value: 'Go to Pokédex'),
-            buildElevatedButton(context: context, route: const CollectionWidget(), value: 'Go to pokemons collected'),
+            buildElevatedButton(context: context, route: PokedexWidget(onThemeChanged: widget.onThemeChanged), value: 'Go to Pokédex'),
+            buildElevatedButton(context: context, route: CollectionWidget(onThemeChanged: widget.onThemeChanged), value: 'Go to pokemons collected'),
           ],
         ),
       ),
