@@ -53,12 +53,13 @@ class PokemonRepository {
         typeCounts.update(type.name, (existingValue) => existingValue + 1, ifAbsent: () => 1);
       }
     }
-
-    var highestCountEntry = typeCounts.entries.reduce((current, next) => next.value > current.value ? next : current);
-    mostCommonTypes = typeCounts.entries
-    .where((entry) => entry.value == highestCountEntry.value)
-    .map((entry) => entry.key)
-    .toList();
+    if (typeCounts.entries.isNotEmpty) {
+      var highestCountEntry = typeCounts.entries.reduce((current, next) => next.value > current.value ? next : current);
+      mostCommonTypes = typeCounts.entries
+      .where((entry) => entry.value == highestCountEntry.value)
+      .map((entry) => entry.key)
+      .toList();
+    }
 
 
     String? colorKey =  (mostCommonTypes.length == 1)? mostCommonTypes[0].capitalize() : null;
