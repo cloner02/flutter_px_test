@@ -29,7 +29,7 @@ class PokemonButtonCapture extends StatelessWidget {
                     isCatched? viewModel.removePokemon(pokemon:pokemon): viewModel.addPokemon(pokemon:pokemon);
                 },
               ),
-              isCatched? const Text('Release Pokemon') : const Text('Catch Pokemon'), // add your text here
+              isCatched? const Text('Release Pokemon', style: TextStyle(fontSize: 20) ) : const Text('Catch Pokemon', style: TextStyle(fontSize: 20)), // add your text here
             ],
           );
   }

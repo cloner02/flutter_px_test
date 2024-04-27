@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pokedex/components/routebutton.dart';
+import 'package:flutter_pokedex/mvvm/app/viewmodel.dart';
 import 'package:flutter_pokedex/mvvm/observer.dart';
 import 'package:flutter_pokedex/mvvm/pokemon/repository.dart';
 import 'package:flutter_pokedex/mvvm/pokemon/ui/collection_ui.dart';
-import 'package:flutter_pokedex/mvvm/pokemon/viewmodel/details_viewmodel.dart';
 import 'package:flutter_pokedex/mvvm/pokemonbase/ui/podekdex_ui.dart';
 import 'package:flutter_pokedex/utils/theme.dart';
 import 'components/appbar.dart';
@@ -57,8 +58,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> implements EventObserver{
-  final PokemonDetailsViewModel _viewModel =
-      PokemonDetailsViewModel(PokemonRepository());
+  final AppViewModel _viewModel =
+      AppViewModel(PokemonRepository());
   
   @override
   void initState() {
@@ -73,26 +74,6 @@ class _HomeState extends State<Home> implements EventObserver{
     _viewModel.unsubscribe(this);
   }
 
-
-  ElevatedButton buildElevatedButton({required BuildContext context, required Widget route, required String value}) {
-  return ElevatedButton(
-    style: ElevatedButton.styleFrom(
-      shape: const CircleBorder(),
-      padding: const EdgeInsets.all(64),
-    ),
-    child: ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 150),
-      child: Text(value, textAlign: TextAlign.center),
-    ),
-    onPressed: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => route),
-      );
-    },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,8 +85,8 @@ class _HomeState extends State<Home> implements EventObserver{
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            buildElevatedButton(context: context, route: PokedexWidget(onThemeChanged: widget.onThemeChanged), value: 'Go to Pokédex'),
-            buildElevatedButton(context: context, route: CollectionWidget(onThemeChanged: widget.onThemeChanged), value: 'Go to pokemons collected'),
+            RouteButton(context: context, route: PokedexWidget(onThemeChanged: widget.onThemeChanged), value: 'Go to Pokédex'),
+            RouteButton(context: context, route: CollectionWidget(onThemeChanged: widget.onThemeChanged), value: 'Go to pokemons collected'),
           ],
         ),
       ),

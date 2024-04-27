@@ -19,7 +19,7 @@ class PokemonBaseRepository {
         "id": pokemon['entry_number']
       }));
     }
-    // sort by name
+
     _pokemonList.sort((a, b) => a.name.compareTo(b.name));
 
     return Future.value(_pokemonList);

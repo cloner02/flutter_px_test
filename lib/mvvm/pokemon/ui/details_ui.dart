@@ -46,7 +46,7 @@ class _PokedexState extends State<PokemonDetailsWidget> implements EventObserver
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:  CustomAppBar(
-        title: 'Pokedex',
+        title: 'Details',
         previousScreen: widget.previousScreen,
       ),
       body: _isLoading ? (
