@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pokedex/mvvm/observer.dart';
+import 'package:flutter_pokedex/mvvm/pokemon/repository.dart';
 import 'package:flutter_pokedex/mvvm/pokemon/ui/collection_ui.dart';
+import 'package:flutter_pokedex/mvvm/pokemon/viewmodel/details_viewmodel.dart';
 import 'package:flutter_pokedex/mvvm/pokemonbase/ui/podekdex_ui.dart';
 import 'package:flutter_pokedex/utils/theme.dart';
 import 'components/appbar.dart';
@@ -53,7 +56,23 @@ class Home extends StatefulWidget {
   }
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends State<Home> implements EventObserver{
+  final PokemonDetailsViewModel _viewModel =
+      PokemonDetailsViewModel(PokemonRepository());
+  
+  @override
+  void initState() {
+    super.initState();
+    _viewModel.setNewTheme();
+    _viewModel.subscribe(this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _viewModel.unsubscribe(this);
+  }
+
 
   ElevatedButton buildElevatedButton({required BuildContext context, required Widget route, required String value}) {
   return ElevatedButton(
@@ -91,5 +110,15 @@ class _HomeState extends State<Home> {
         ),
       ),
     );
+  }
+
+  @override
+  void notify(ViewEvent event) {
+    if (event is SetNewThemeEvent)
+    {
+      setState(() {
+        widget.onThemeChanged(event.themeData);
+      });
+    }
   }
 }
