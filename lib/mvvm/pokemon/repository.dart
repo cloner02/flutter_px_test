@@ -44,30 +44,24 @@ class PokemonRepository {
 
   Future<ThemeData> setNewTheme() async {
     Map<String, int> typeCounts = {};
+    List<String> mostCommonTypes = [];
+
     _pokemonList = await loadPokemonCollection();
+    
     for (Pokemon pokemon in _pokemonList) {
       for (PokemonType type in pokemon.types) {
-        if (typeCounts.containsKey(type.name)) {
-          typeCounts[type.name] = typeCounts[type.name]! + 1;
-        } else {
-          typeCounts[type.name] = 1;
-        }
+        typeCounts.update(type.name, (existingValue) => existingValue + 1, ifAbsent: () => 1);
       }
     }
 
-    int highestCount = 0;
-    List<String> mostCommonTypes = [];
+    var highestCountEntry = typeCounts.entries.reduce((current, next) => next.value > current.value ? next : current);
+    mostCommonTypes = typeCounts.entries
+    .where((entry) => entry.value == highestCountEntry.value)
+    .map((entry) => entry.key)
+    .toList();
 
-    typeCounts.forEach((type, count) {
-      if (count > highestCount) {
-        highestCount = count;
-        mostCommonTypes = [type];
-      } else if (count == highestCount) {
-        mostCommonTypes.add(type);
-      }
-    });
 
-    String colorKey =  (mostCommonTypes.length == 1)? mostCommonTypes[0].capitalize() : 'default';
+    String? colorKey =  (mostCommonTypes.length == 1)? mostCommonTypes[0].capitalize() : null;
 
 
     _themeData = createTheme(colorKey: colorKey);
